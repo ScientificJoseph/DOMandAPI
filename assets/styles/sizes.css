@@ -22,3 +22,7 @@ body {
   overflow: scroll;
 }
 
+#main-box::-webkit-scrollbar {
+  display: none;
+}
+
