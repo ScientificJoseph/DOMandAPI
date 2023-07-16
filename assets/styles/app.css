@@ -54,6 +54,10 @@ section ul {
   overflow: scroll;
 }
 
+section ul::-webkit-scrollbar {
+  display: none;
+}
+
 section > h2 {
   color: white;
   margin: 0;
