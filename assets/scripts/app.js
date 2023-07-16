@@ -31,16 +31,17 @@ class Component { // base class for attach and detach
     attach() { // called from showMoreInfoHandler method in ProjectItem .determines where toolTip dialog will appear based on parameter status.
         // document.body.append(this.element)
         this.hostElement.insertAdjacentElement(this.insertBefore ? 'afterbegin' : 'beforeend', this.element) //if arguments recieved to constructor call when toolTip extends component this wdill detemin where tooltip dialog will appear. if none are received the toolTip dialog will appear before the end of the document body
-        console.log(this.insertBefore)
+        // console.log(this.insertBefore)
     }
 
 }
 
 class Tooltip extends Component{
-    constructor(closeNotifierFunction) { //function parameter received on instatiation in ProjectItem showMoreInfoHandler(). Ensures that a toolTtip dialog box status is not active.
+    constructor(closeNotifierFunction, text) { //function parameter and dataset text received on instatiation in ProjectItem showMoreInfoHandler(). closeNotifierFunction Ensures that a toolTtip dialog box status is not active.
         super(); // can be used to pass parameters to Component constructor that will determin where toolTip dialog will appear
         // super('active-projects', true); 
         this.closeNotifier = closeNotifierFunction;
+        this.text = text;
         this.create(); // calls create method on instantiation to create toolTip dialog element
     }
 
@@ -52,7 +53,7 @@ class Tooltip extends Component{
     create() {
         const tooltipElement = document.createElement('div') // div for tooltip element
         tooltipElement.className = 'card';
-        tooltipElement.textContent = 'Beyond fun, this project is pure Bliss!' 
+        tooltipElement.textContent = this.text //received from constructor parameter text
         tooltipElement.addEventListener('click', this.closeTooltip) // adds eventListener to div and calls closeToolTip on click to remove the toolTip and set hascActive to false. binding is not needed to to close tool tip being an arrow function 
         this.element = tooltipElement // The methods detach and attach extended from Component use this to remove or determine where the tooltip dialog will apear
     }
@@ -63,19 +64,21 @@ class Projectitem {
     hasActiveToolTip = false; // set up to see if item already has an active toolTip
 
     constructor(id, updateProjectListFunction, type) { // parameters receivved from ProjectList constructor on ProjectItem instatiation
-        this.id = id;
+        this.id = id; //id of DOM node
         this.updateProjectListHandler = updateProjectListFunction;
         this.connectMoreInfoButton();
         this.connectSwithchButton(type);
     }
 
-    showMoreInfoHandler() { // called whem nore info Btn is clicked
+    showMoreInfoHandler() { // called when more info Btn is clicked
         if (this.hasActiveToolTip) { //stops addition toolTip project information dialog from being added if it is already present
             return;
         }
+        const projectElement = document.getElementById(this.id); // project list item id
+        const tooltipText = projectElement.dataset.extraInfo // dataset name is converted from extra-info automatically
         const tooltip = new Tooltip(() => { //creates toolTip object. On instantiation passes anonomous function to the constructor that when called sets the value of hasActiveTooltip to false when toolTip is closed
             this.hasActiveToolTip = false;
-        })
+        }, tooltipText) // On instantiation passed to toolTip object
         tooltip.attach();  //calls attatch method in Tooltip extended Class Component object that determsines where tooltip dialog will appear 
         this.hasActiveToolTip = true; // sets tooltip element status to active to ensure that that clicking More Info Btn won't add another toolTip.
     }
@@ -83,7 +86,7 @@ class Projectitem {
     connectMoreInfoButton(){ //connects to more info Button
         const projectItemElement = document.getElementById(this.id);
         const moreInfoBtn = projectItemElement.querySelector('button:first-of-type')
-        moreInfoBtn.addEventListener('click', this.showMoreInfoHandler); //adds eventListtener to More Info Btn. calls method whe clicked
+        moreInfoBtn.addEventListener('click', this.showMoreInfoHandler.bind(this)); //adds eventListtener to More Info Btn. calls method whe clicked
     }
 
     connectSwithchButton(type) { //type received from call to functiom
