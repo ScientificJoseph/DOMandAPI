@@ -37,8 +37,8 @@ class Component { // base class for attach and detach
 }
 
 class Tooltip extends Component{
-    constructor(closeNotifierFunction, text) { //function parameter and dataset text received on instatiation in ProjectItem showMoreInfoHandler(). closeNotifierFunction Ensures that a toolTtip dialog box status is not active.
-        super(); // can be used to pass parameters to Component constructor that will determin where toolTip dialog will appear
+    constructor(closeNotifierFunction, text, hostElementId) { //function parameter and dataset text received on instatiation in ProjectItem showMoreInfoHandler(). closeNotifierFunction Ensures that a toolTtip dialog box status is not active. hostElementId used for positioning toolTip
+        super(hostElementId); // can be used to pass parameters to Component constructor that will determin where toolTip dialog will appear
         // super('active-projects', true); 
         this.closeNotifier = closeNotifierFunction;
         this.text = text;
@@ -54,6 +54,20 @@ class Tooltip extends Component{
         const tooltipElement = document.createElement('div') // div for tooltip element
         tooltipElement.className = 'card';
         tooltipElement.textContent = this.text //received from constructor parameter text
+        // console.log(this.hostElement.getBoundingClientRect())
+
+        const hostElPosLeft = this.hostElement.offsetLeft;
+        const hostElPosTop = this.hostElement.offsetTop;
+        const hostElHeight = this.hostElement.clientHeight;
+        const parentHostScrolling = this.hostElement.parentElement.scrollTop
+
+        const x = hostElPosLeft + 20;
+        const y = hostElPosTop + hostElHeight - parentHostScrolling - 10;
+
+        tooltipElement.style.position = 'absolute'
+        tooltipElement.style.left = `${x}px`
+        tooltipElement.style.top = `${y}px`
+
         tooltipElement.addEventListener('click', this.closeTooltip) // adds eventListener to div and calls closeToolTip on click to remove the toolTip and set hascActive to false. binding is not needed to to close tool tip being an arrow function 
         this.element = tooltipElement // The methods detach and attach extended from Component use this to remove or determine where the tooltip dialog will apear
     }
@@ -78,7 +92,7 @@ class Projectitem {
         const tooltipText = projectElement.dataset.extraInfo // dataset name is converted from extra-info automatically
         const tooltip = new Tooltip(() => { //creates toolTip object. On instantiation passes anonomous function to the constructor that when called sets the value of hasActiveTooltip to false when toolTip is closed
             this.hasActiveToolTip = false;
-        }, tooltipText) // On instantiation passed to toolTip object
+        }, tooltipText, this.id) // On instantiation passed to toolTip object
         tooltip.attach();  //calls attatch method in Tooltip extended Class Component object that determsines where tooltip dialog will appear 
         this.hasActiveToolTip = true; // sets tooltip element status to active to ensure that that clicking More Info Btn won't add another toolTip.
     }
