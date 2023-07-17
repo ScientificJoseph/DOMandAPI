@@ -18,7 +18,7 @@ class Component { // base class for attach and detach
             this.hostElement = document.getElementById(hostElementId); // if id is passed host elemnet id is used by attach method to determine where tooltip dialog will appear
         } else {
             this.hostElement = document.body; // used if null is received from super constuctor call when ToolTip is extended. attach method terinary operator will be false and this.element will appear before the end of the body of the document  
-        }
+        } 
         this.insertBefore = insertBefore //default is false. true if true is passed to constructor
     }
     detach(){ 
