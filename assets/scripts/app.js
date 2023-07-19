@@ -9,6 +9,7 @@ class DOMHelper { // called from connectSwithchButton() in ProjectItem
         const element = document.getElementById(elementId); // id of element to be moved
         const destinationElement = document.querySelector(newDestinationSelector); //place where elemt will be moved
         destinationElement.append(element) // puts moved element in its place
+        element.scrollIntoView({behavior: 'smooth'})
     }
 }
 
@@ -53,7 +54,11 @@ class Tooltip extends Component{
     create() {
         const tooltipElement = document.createElement('div') // div for tooltip element
         tooltipElement.className = 'card';
-        tooltipElement.textContent = this.text //received from constructor parameter text
+        // tooltipElement.textContent = this.text //received from constructor parameter text
+        const tooltipTemplate = document.getElementById('tooltip');
+        const tooltipBody = document.importNode(tooltipTemplate.content, true)
+        tooltipBody.querySelector('p').textContent = this.text
+        tooltipElement.append(tooltipBody)
         // console.log(this.hostElement.getBoundingClientRect())
         console.log(this.hostElement)
         const hostElPosLeft = this.hostElement.offsetLeft;
