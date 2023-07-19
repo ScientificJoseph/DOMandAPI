@@ -59,7 +59,7 @@ class Tooltip extends Component{
         const hostElPosLeft = this.hostElement.offsetLeft;
         const hostElPosTop = this.hostElement.offsetTop;
         const hostElHeight = this.hostElement.clientHeight;
-        const parentHostScrolling = this.hostElement.parentElement.scrollTop // takes into account the scroll distance
+        const parentHostScrolling = this.hostElement.parentElement.scrollTop // takes into account the scroll distance from top of parent element (UL)
         console.log(this.hostElement.parentElement)
 
         const x = hostElPosLeft + 20;
