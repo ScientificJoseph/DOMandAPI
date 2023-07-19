@@ -65,7 +65,7 @@ class Tooltip extends Component{
         const x = hostElPosLeft + 20;
         const y = hostElPosTop + hostElHeight - parentHostScrolling - 10;
 
-        tooltipElement.style.position = 'absolute' // absolute property needed to take the eleemnt out of the flow of the document and allow it to be positioned independently
+        tooltipElement.style.position = 'absolute' // absolute property needed to take the elemnt out of the flow of the document and allow it to be positioned independently
         tooltipElement.style.left = `${x}px`//px needs to be added just like in css
         tooltipElement.style.top = `${y}px`
 
