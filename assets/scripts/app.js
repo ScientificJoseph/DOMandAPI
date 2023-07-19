@@ -37,9 +37,9 @@ class Component { // base class for attach and detach
 }
 
 class Tooltip extends Component{
-    constructor(closeNotifierFunction, text, hostElementId) { //function parameter and dataset text received on instatiation in ProjectItem showMoreInfoHandler(). closeNotifierFunction Ensures that a toolTtip dialog box status is not active. hostElementId used for positioning toolTip
-        super(hostElementId); // can be used to pass parameters to Component constructor that will determin where toolTip dialog will appear
-        // super('active-projects', true); 
+    constructor(closeNotifierFunction, text, hostElementId) { //function parameter and dataset text received on instatiation in ProjectItem showMoreInfoHandler(). closeNotifierFunction Ensures that a toolTtip dialog box status is not active. hostElementId is received from projectItem function showMoreInfoHandler and is used for positioning toolTip
+        super(hostElementId); // calls constructor in component and receives the id of the element containing the tool tip to be positioned. used in the create method below
+        // super('active-projects', true); //can be used to pass parameters to Component constructor that will determin where toolTip dialog will appear
         this.closeNotifier = closeNotifierFunction;
         this.text = text;
         this.create(); // calls create method on instantiation to create toolTip dialog element
@@ -55,17 +55,18 @@ class Tooltip extends Component{
         tooltipElement.className = 'card';
         tooltipElement.textContent = this.text //received from constructor parameter text
         // console.log(this.hostElement.getBoundingClientRect())
-
+        console.log(this.hostElement)
         const hostElPosLeft = this.hostElement.offsetLeft;
         const hostElPosTop = this.hostElement.offsetTop;
         const hostElHeight = this.hostElement.clientHeight;
-        const parentHostScrolling = this.hostElement.parentElement.scrollTop
+        const parentHostScrolling = this.hostElement.parentElement.scrollTop // takes into account the scroll distance
+        console.log(this.hostElement.parentElement)
 
         const x = hostElPosLeft + 20;
         const y = hostElPosTop + hostElHeight - parentHostScrolling - 10;
 
-        tooltipElement.style.position = 'absolute'
-        tooltipElement.style.left = `${x}px`
+        tooltipElement.style.position = 'absolute' // absolute property needed to take the eleemnt out of the flow of the document and allow it to be positioned independently
+        tooltipElement.style.left = `${x}px`//px needs to be added just like in css
         tooltipElement.style.top = `${y}px`
 
         tooltipElement.addEventListener('click', this.closeTooltip) // adds eventListener to div and calls closeToolTip on click to remove the toolTip and set hascActive to false. binding is not needed to to close tool tip being an arrow function 
@@ -92,7 +93,7 @@ class Projectitem {
         const tooltipText = projectElement.dataset.extraInfo // dataset name is converted from extra-info automatically
         const tooltip = new Tooltip(() => { //creates toolTip object. On instantiation passes anonomous function to the constructor that when called sets the value of hasActiveTooltip to false when toolTip is closed
             this.hasActiveToolTip = false;
-        }, tooltipText, this.id) // On instantiation passed to toolTip object
+        }, tooltipText, this.id) // On instantiation passed to toolTip object. this.id id is passed to the tooltip to identify the element in toolTip create function.
         tooltip.attach();  //calls attatch method in Tooltip extended Class Component object that determsines where tooltip dialog will appear 
         this.hasActiveToolTip = true; // sets tooltip element status to active to ensure that that clicking More Info Btn won't add another toolTip.
     }
