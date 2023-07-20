@@ -57,7 +57,7 @@ class Tooltip extends Component{
         // tooltipElement.textContent = this.text //received from constructor parameter text
         const tooltipTemplate = document.getElementById('tooltip');
         const tooltipBody = document.importNode(tooltipTemplate.content, true)
-        tooltipBody.querySelector('p').textContent = this.text
+        tooltipBody.querySelector('p').textContent = this.text;
         tooltipElement.append(tooltipBody)
         // console.log(this.hostElement.getBoundingClientRect())
         console.log(this.hostElement)
