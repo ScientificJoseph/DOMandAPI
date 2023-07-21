@@ -160,6 +160,10 @@ class App {
         const finishedProjectList = new ProjectList('finished');
         activeProjectList.setSwitchHandlerFunction(finishedProjectList.addProject.bind(finishedProjectList)); // calls SwitchHandlerFunction on instatiation, defines which objects addProduct method should be called by connecting/binding addProject from finishedProject. When switchProject is invoked on click switchHandler gets called invoking addProject method.
         finishedProjectList.setSwitchHandlerFunction(activeProjectList.addProject.bind(activeProjectList));
+        
+        const someScript = document.createElement('script');
+        someScript.textContent = 'alert("Hi There...")';
+        // document.head.append(someScript)
     }
 }
 
