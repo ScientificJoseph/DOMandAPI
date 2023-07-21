@@ -34,7 +34,6 @@ class Component { // base class for attach and detach
         this.hostElement.insertAdjacentElement(this.insertBefore ? 'afterbegin' : 'beforeend', this.element) //if arguments recieved to constructor call when toolTip extends component this wdill detemin where tooltip dialog will appear. if none are received the toolTip dialog will appear before the end of the document body
         // console.log(this.insertBefore)
     }
-
 }
 
 class Tooltip extends Component{
