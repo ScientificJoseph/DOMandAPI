@@ -84,7 +84,7 @@ class Projectitem {
 
     constructor(id, updateProjectListFunction, type) { // parameters receivved from ProjectList constructor on ProjectItem instatiation
         this.id = id; //id of DOM node
-        this.updateProjectListHandler = updateProjectListFunction;
+        this.updateProjectListHandler = updateProjectListFunction; // switchHandler() from ProjectList
         this.connectMoreInfoButton();
         this.connectSwithchButton(type);
     }
@@ -113,7 +113,7 @@ class Projectitem {
         let switchBtn = projectItemElement.querySelector('button:last-of-type');
         switchBtn = DOMHelper.clearEventListeners(switchBtn) // passes button to DOMHelper static method to clear any pre-existing eventListeners
         switchBtn.textContent = type ==='active' ? 'Finish' : 'Activate'; //changes the tect when active/finished status changes
-        switchBtn.addEventListener('click', this.updateProjectListHandler.bind(null, this.id))//received from update. calls switchProject on click then switchHandler/addProject is invoked.
+        switchBtn.addEventListener('click', this.updateProjectListHandler.bind(null, this.id))//received from update. binds switchProject to Btn. when clicked, switchHandler/addProject is invoked.
     }
 
     update(updateProjectListFn, type) { //received on call from addProject in ProjectList
